@@ -18,12 +18,13 @@ class ZUVIO:
             'account': account,
             'password': password
         }
+        self.rollRes = ""
         # 登入
         self.login()
         # 載入課程
         self.courseList()
-        # 看點名
-        self.checkIn()
+        # 看點名 並點名
+        self.checkInService()
 
     def checkUser(self):
         userRegular = re.findall(
@@ -91,7 +92,32 @@ class ZUVIO:
         else:
             print('[ 取得課程失敗:( ]')
 
-    def checkIn(self):
+    def makeRoll(self, user_latitude, user_longitude):
+        # 點名的ajax
+        # url
+        print('[點名中..]')
+        url = "https://irs.zuvio.com.tw/app_v2/makeRollcall"
+        accessToken = re.findall(r'accessToken=\"(.*?)\";',
+                                 self.rollRes.text.replace(' ', '').replace('\n', ''))[0]
+        rollcall_id = re.findall(r'rollcall_id=(.*?)\;',
+                                 self.rollRes.text.replace(' ', '').replace('\n', ''))[0]
+        rollcall_id = rollcall_id.replace("'",'').replace('"','')
+        data = {
+            'user_id': self.zuvioStd['id'],
+            'accessToken': accessToken,
+            'rollcall_id': rollcall_id,
+            'device': 'WEB',
+            'lat': user_latitude,
+            'lng': user_longitude
+        }
+        thisSession = self.session
+        self.userCourse = thisSession.post(url=url,json=data).json()
+        if self.userCourse['status']:
+            print("[點名成功！]",self.userCourse)
+        else:
+            print("[點名失敗]",self.userCourse)
+
+    def checkInService(self):
         print("[載入本學期課程]", self.currentSemester)
         currentCourses = []
         for course in self.userCourse['courses']:
@@ -104,15 +130,17 @@ class ZUVIO:
         currentCourse = schoolWebap.getCurrentCourse()
         if currentCourse:
             for course in currentCourses:
-                if currentCourse['name'] in course['course_name']: 
+                if currentCourse['name'] in course['course_name']:
                     rollcallUrl = f"https://irs.zuvio.com.tw/student5/irs/rollcall/{course['course_id']}"
-                    res = self.session.get(url=rollcallUrl)
-                    if '目前未開放簽到' in res.text:
+                    self.rollRes = self.session.get(url=rollcallUrl)
+                    if '目前未開放簽到' in self.rollRes.text:
                         print('未開放簽到:', course['course_name'])
                     else:
                         print('[檢測簽到]')
                         print(course['course_name'])
                         print('[開始自動簽到]')
+                        # 點名
+                        self.makeRoll(0, 0)
                         print('[自動簽到完成]')
                     break
         else:
