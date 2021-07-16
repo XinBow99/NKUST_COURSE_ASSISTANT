@@ -1,0 +1,93 @@
+
+  <div *ngIf="auth.user | async as user; else showLogin">
+    <h1>Hello {{ user.displayName }}!</h1>
+  </div>
+  <ng-template #showLogin>
+    <div class="text-center">
+      <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" width="70%" height="30%" viewBox="200 75 489 183">
+        <path class="st0 an-1 delay-1" d="M476.8 167h-72" />
+
+        <!-- E circle element 1 -->
+        <g class="orbit delay-last-4">
+          <circle class="st1 an-1" cx="404.8" cy="127" r="20" />
+          <circle class="st9 scale delay-1" cx="404.8" cy="108" r="6" />
+        </g>
+
+        <!-- triangle element -->
+        <path class="st2 an-1" d="M284.8 124l-40 89h80z" />
+
+        <circle class="st3 scale-1" cx="476.8" cy="167" r="8" />
+        <circle class="st4 an-1 delay-2" cx="476.8" cy="167" r="40" />
+        <circle class="st5 an-1" cx="588.8" cy="167" r="44" />
+
+        <!-- line element -->
+        <path class="st6 an-1 delay-last-2" d="M540.8 103l-128 128" />
+
+        <!-- O Base -->
+
+        <path class="st7 an-1 delay-first-1" d="M632.8 167c0 24.3-19.7 44-44 44s-44-19.7-44-44 19.7-44 44-44" />
+
+        <circle class="st8 scale-1 delay-last-3" cx="588.8" cy="123" r="4" />
+        <circle class="st9 scale delay-last-4" cx="588.8" cy="167" r="28" />
+
+        <!-- LL Base -->
+
+        <path class="st10--a an-1 delay-first-2"
+          d="M492.8 159v24c0 13.2 10.8 24 24 24h24M428.8 119v64c0 13.2 10.8 24 24 24h24" />
+
+        <path class="st10--b an-1 delay-middle-2"
+          d="M492.8 159v24c0 13.2 10.8 24 24 24h24M428.8 119v64c0 13.2 10.8 24 24 24h24" />
+
+        <path class="st10 an-1 delay-last-2"
+          d="M492.8 159v24c0 13.2 10.8 24 24 24h24M428.8 119v64c0 13.2 10.8 24 24 24h24" />
+
+        <!-- LL yellow top -->
+        <rect class="illo-glt an-2 delay-first-1" x="485" y="119" width="16" height="40" />
+
+        <rect class="illo-ylt an-2 delay-middle-1" x="485" y="119" width="16" height="40" />
+
+        <!-- L Dot -->
+        <circle class="illo-ydot delay-last-3" cx="476.8" cy="207" r="8" />
+
+        <circle class="st9 scale-1 delay-last-4" cx="476.8" cy="207" r="8" />
+
+        <!-- H E Base -->
+
+        <path class="st10--a an-1 delay-first-1"
+          d="M404.8 127h-16c-13.2 0-24 10.8-24 24v32c0 13.2 10.8 24 24 24h24M340.8 215v-96M284.8 119v96" />
+
+        <path class="st10--b an-1 delay-middle-1"
+          d="M404.8 127h-16c-13.2 0-24 10.8-24 24v32c0 13.2 10.8 24 24 24h24M340.8 215v-96M284.8 119v96" />
+
+        <path class="st10 an-1 delay-last-1"
+          d="M404.8 127h-16c-13.2 0-24 10.8-24 24v32c0 13.2 10.8 24 24 24h24M340.8 215v-96M284.8 119v96" />
+
+        <!-- HE crossbar element -->
+        <path class="st10--b an-4" d="M292.8 167h112" />
+
+        <circle class="st13 scale-1 delay-last-2" cx="352.8" cy="167" r="10" />
+        <circle class="st14 scale-1 delay-last-4" cx="528.8" cy="115" r="6" />
+        <circle class="st14 scale" cx="404.8" cy="127" r="8" />
+        <circle class="st3 scale" cx="404.8" cy="127" r="3" />
+
+        <!-- wave element -->
+        <path class="an-3 illo-bwave" d="M276.8 227c8 0 8 8 16 8s8-8 16-8 8 8 16 8 8-8 16-8 8 8 16 8 8-8 16-8" />
+
+        <g class="rotate delay-last-5">
+          <path class="st15 scale-rotate delay-last-4" d="M580.8 153h16l-8 14zM596.8 181h-16l8-14z" />
+        </g>
+
+        <circle class="st15 scale-1 delay-1" cx="572.8" cy="101" r="4" />
+        <circle class="st15 scale-1 delay-2" cx="588.8" cy="101" r="5" />
+        <circle class="st15 scale-1" cx="558.8" cy="101" r="3" />
+      </svg>
+    </div>
+    <div class="main text-center">
+      <div class="loginbox mx-auto mt-5 w-50 p-5 bg-light border border-2 rounded">
+        <h1 class="mb-5">There is only one way to login</h1>
+        <button (click)="login()" type="button" class="login-with-google-btn">
+          Sign in with Google
+        </button>
+      </div>
+    </div>
+  </ng-template>

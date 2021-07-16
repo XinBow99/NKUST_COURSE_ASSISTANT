@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "bestschoolservicefornkust": {
+      "hosting": {
+        "BestSchoolPlatform": [
+          "bestschoolservicefornkust"
+        ]
+      }
+    }
+  }
+}

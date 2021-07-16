@@ -1,0 +1,5 @@
+<div *ngIf="auth.user | async as user;">
+
+    <button (click)="logout()">Logout</button>
+    <h1 (click)="logout()">Hello {{ user.displayName }}!</h1>
+</div>
