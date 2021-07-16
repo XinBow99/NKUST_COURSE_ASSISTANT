@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
-//import firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import { Observable } from 'rxjs';
-import {firebase, firebaseui, FirebaseUIModule} from 'firebaseui-angular';
+//import {firebase, firebaseui, FirebaseUIModule} from 'firebaseui-angular';
 
 //interface
 export interface Item { name: string; }
