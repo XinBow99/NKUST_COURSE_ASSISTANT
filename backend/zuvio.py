@@ -127,6 +127,7 @@ class ZUVIO:
         print("[載入校務系統]")
         schoolWebap = webap.WEBAP(self.studentInformation['account'].split(
             "@")[0], self.studentInformation['password'], self.currentSemester)
+        schoolWebap.getCourseService()
         currentCourse = schoolWebap.getCurrentCourse()
         if currentCourse:
             for course in currentCourses:

@@ -47,12 +47,17 @@ class WEBAP:
             'account': account,
             'password': password
         }
+
+    def getCourseService(self):
         # 登入
         self.login()
         # 解析時間
         self.getCurrentSchoolTime()
         # 取得課程
         self.getCourses()
+
+    def checkCreditsSeriece(self):
+        pass
 
     def login(self):
         print('[嘗試進行登入]')
