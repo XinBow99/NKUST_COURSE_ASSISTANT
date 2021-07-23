@@ -15,7 +15,7 @@ document.addEventListener(
             cancelButtonText: "下次再查",
             showLoaderOnConfirm: true,
             preConfirm: () => {
-              return fetch(`http://127.0.0.1:5252/getcourseinformation`, {
+              return fetch(`http://bikehub.54ucl.com:5252/getcourseinformation`, {
                 method: "POST",
                 body: new URLSearchParams({
                   data: btoa(new URLSearchParams(keys)),
