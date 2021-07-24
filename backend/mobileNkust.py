@@ -118,15 +118,48 @@ class NKUST:
             'majors': [],  # 專業
             'sport': [],  # 體育
             'service': [],  # 服務教育
-            'totalCredits': 0
+            'totalCredits': {
+                'pass': {
+                    'courses': [],
+                    'value': 0
+                },
+                'fail': {
+                    'courses': [],
+                    'value': 0
+                },
+                'will':{
+                    'courses': [],
+                    'value': 0
+                },
+                'total': {
+                    'value': 0
+                }
+            }
         }
         for courses in self.Course:
             # 未來改用CourseId
             for course in courses:
-                classification['totalCredits'] += course['Credit']
+                classification['totalCredits']['total'] += course['Credit']
+                thisGrade = self.Grades[course['CourseName']]['grade']
+                #分類
+                pass_or_faile_or_will = ""
+                #有過
+                if thisGrade >= 60 or thisGrade == "合格":
+                    pass_or_faile_or_will = 'pass'
+                #正在打成績
+                elif thisGrade == "":
+                    pass_or_faile_or_will = 'will'
+                #沒過QQ
+                else:
+                    pass_or_faile_or_will = 'fail'
+                #加入課程
+                classification['totalCredits'][pass_or_faile_or_will]['courses'].append(course['CourseName'])
+                # 加入課程學分
+                classification['totalCredits'][pass_or_faile_or_will]['value'] += course['Credit']
+                
                 # 幫course加入分數
                 course.update(
-                    self.Grades[course['CourseName']]
+                    thisGrade
                 )
                 course.update(
                     {'gpa': self.gpaCalc(self.Grades[course['CourseName']])}
@@ -154,7 +187,6 @@ class NKUST:
         self.classificationCourses = classification
 
     def gpaCalc(self, data):
-        data = data['grade']
         gpa = ""
         if data == "合格" or data == "":
             return "-"
