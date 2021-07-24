@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import base64
 import mobileNkust
+import hashlib
 
 app = Flask(__name__)
 CORS(app)
@@ -11,15 +12,18 @@ def getcourseinformation():
     global temp_
     print('step1')
     cookie = request.form.get("data")
-    if cookie in temp_:
-        return jsonify(temp_[cookie])
+    m = hashlib.md5()
+    m.update(cookie.encode("utf-8"))
+    h = m.hexdigest()
+    if h in temp_:
+        return jsonify(temp_[h])
     print('step2')
     cookie = base64.b64decode(cookie).decode('utf8').replace('&',';')
 
     #print(cookie)
     user = mobileNkust.NKUST(cookie)
     returnData = user.returnclassificationCourses()
-    temp_[cookie] = returnData
+    temp_[h] = returnData
     return jsonify(returnData)
 
 
