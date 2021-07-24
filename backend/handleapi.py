@@ -9,9 +9,11 @@ temp_ = {}
 @app.route("/getcourseinformation", methods=['POST'])
 def getcourseinformation():
     global temp_
+    print('step1')
     cookie = request.form.get("data")
     if cookie in temp_:
         return jsonify(temp_[cookie])
+    print('step2')
     cookie = base64.b64decode(cookie).decode('utf8').replace('&',';')
 
     #print(cookie)
