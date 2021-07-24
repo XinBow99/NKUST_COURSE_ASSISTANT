@@ -15,6 +15,7 @@ def getcourseinformation():
     m = hashlib.md5()
     m.update(cookie.encode("utf-8"))
     h = m.hexdigest()
+    print('[USER->]',h)
     if h in temp_:
         return jsonify(temp_[h])
     print('step2')

@@ -128,6 +128,9 @@ class NKUST:
                 course.update(
                     self.Grades[course['CourseName']]
                 )
+                course.update(
+                    {'gpa': self.gpaCalc(self.Grades[course['CourseName']])}
+                )
                 # 博雅
                 if '核心' in course['CourseName'] or '博雅' in course['CourseName'] or '通識微學分' in course['CourseName'] or '自主學習課程' in course['CourseName']:
                     classification['cla'].append(course)
@@ -149,6 +152,23 @@ class NKUST:
                 else:
                     classification['majors'].append(course)
         self.classificationCourses = classification
+
+    def gpaCalc(self, data):
+        gpa = ""
+        if data == "合格" or data == "":
+            return "-"
+        data = int(data)
+        if data >= 80:
+            gpa = "A｜4"
+        elif data >= 70:
+            gpa = "B｜3"
+        elif data >= 60:
+            gpa = "C｜2"
+        elif data >= 50:
+            gpa = "D｜1"
+        else:
+            gpa = "E｜0"
+        return gpa
 
     def courseDisplay(self):
         def show(keys):
@@ -174,6 +194,8 @@ class NKUST:
 
     def returnclassificationCourses(self):
         return self.classificationCourses
+
+
 if __name__ == "__main__":
     test = NKUST()
     test.classificationCourse()
