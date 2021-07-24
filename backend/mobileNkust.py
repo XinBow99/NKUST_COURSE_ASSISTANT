@@ -154,7 +154,7 @@ class NKUST:
         self.classificationCourses = classification
 
     def gpaCalc(self, data):
-        print(data)
+        data = data['grade']
         gpa = ""
         if data == "合格" or data == "":
             return "-"
