@@ -1,7 +1,7 @@
 {
   "name": "高科小助手",
   "description": "幫助你快速取得所有課程，並做出分類",
-  "version": "15.1",
+  "version": "15.2",
   "manifest_version": 2,
   "browser_action": {
     "default_popup": "popup.html"
