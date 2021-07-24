@@ -107,7 +107,7 @@ document.addEventListener(
                       <th scope="row" style="text-align:center;" ><span class="badge bg-primary">${CourseId[0]}-${CourseId[1]}</span></th>
                       <td style="text-align:center;" ><span class="badge bg-success">${Credit}</span> </td>
                       <td style="text-align:center;" ><span class="badge bg-warning text-dark">${Grade}</span></td>
-                      <td style="text-align:center;" ><span class="badge bg-danger text-dark">${Gpa}</span></td>
+                      <td style="text-align:center;" ><span class="badge bg-danger ">${Gpa}</span></td>
                       <td>${CourseName}</td>
                       <tr>
                       `
