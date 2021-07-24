@@ -69,6 +69,7 @@ document.addEventListener(
                                           <th style="text-align:center;" scope="col">學期</th>
                                           <th style="text-align:center;" cope="col">學分</th>
                                           <th style="text-align:center;" scope="col">學期成績</th>
+                                          <th style="text-align:center;" scope="col">G.P.A</th>
                                           <th scope="col">科目</th>
                                       </tr>
                                   </thead>
@@ -98,6 +99,7 @@ document.addEventListener(
                     CourseId = value[c].CourseId.split("-");
                     Credit = value[c].Credit;
                     Grade = value[c].grade;
+                    Gpa = value[c].gpa;
                     CourseName = value[c].CourseName;
                     $("#" + key).append(
                       `
@@ -105,6 +107,7 @@ document.addEventListener(
                       <th scope="row" style="text-align:center;" ><span class="badge bg-primary">${CourseId[0]}-${CourseId[1]}</span></th>
                       <td style="text-align:center;" ><span class="badge bg-success">${Credit}</span> </td>
                       <td style="text-align:center;" ><span class="badge bg-warning text-dark">${Grade}</span></td>
+                      <td style="text-align:center;" ><span class="badge bg-danger text-dark">${Gpa}</span></td>
                       <td>${CourseName}</td>
                       <tr>
                       `
@@ -126,3 +129,17 @@ document.addEventListener(
   },
   false
 );
+document.getElementById("gpabtn").addEventListener("click", function () {
+  Swal.fire({
+    title: "GPA計算方式",
+    html:`
+      <p style="text-align:left">一、80分以上為A等，換算為四。<br>
+      二、70分以上未達80分為B等，換算為三。<br>
+      三、60分以上未達70分為C等，換算為二。<br>
+      四、50分以上未達60分為D等，換算為一。<br>
+      五、未達50分為E等，換算為零。<br>
+      <a href="https://rule.nkust.edu.tw/var/file/33/1033/img/460/247863933.pdf">學校之規範</a>
+      </p>
+      `,
+  });
+});
