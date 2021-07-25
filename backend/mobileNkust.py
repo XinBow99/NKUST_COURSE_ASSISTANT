@@ -139,7 +139,7 @@ class NKUST:
         for courses in self.Course:
             # 未來改用CourseId
             for course in courses:
-                classification['totalCredits']['total'] += course['Credit']
+                classification['totalCredits']['total']['value'] += course['Credit']
                 thisGrade = self.Grades[course['CourseName']]['grade']
                 #分類
                 pass_or_faile_or_will = ""
