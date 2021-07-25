@@ -144,6 +144,7 @@ class NKUST:
                 # 分類
                 pass_or_faile_or_will = ""
                 # 有過
+                print(thisGrade)
                 if thisGrade == "合格":
                     pass_or_faile_or_will = 'pass'
                 # 正在打成績
