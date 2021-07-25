@@ -163,7 +163,7 @@ class NKUST:
 
                 # 幫course加入分數
                 course.update(
-                    thisGrade
+                    self.Grades[course['CourseName']]
                 )
                 course.update(
                     {'gpa': self.gpaCalc(thisGrade)}
