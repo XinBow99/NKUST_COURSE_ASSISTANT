@@ -54,11 +54,12 @@ document.addEventListener(
                 majors: { cName: "非通識之科目", color: "warning" },
                 sport: { cName: "體育", color: "info" },
                 service: { cName: "服務教育", color: "primary" },
-                totalCredits: { cName: "預估已修習總學分", color: "dark" },
+                totalCredits: { cName: "詳細學分｜含110-1學期", color: "dark" },
               };
               $("#log").remove();
               Object.entries(courses).forEach(([key, value]) => {
-                let rowStructrue = `
+                if (key != "totalCredits") {
+                  let rowStructrue = `
                     <div class="row-md-6">
                       <div class="card border-${config[key].color} mb-3">
                           <div class="card-header">${config[key].cName}</div>
@@ -81,20 +82,7 @@ document.addEventListener(
                       </div>
                   </div>
                     `;
-                let rowTotalCredits = `
-                    <div class="row-md-6">
-                      <div class="card border-${config[key].color} mb-3">
-                          <div class="card-header">${config[key].cName}</div>
-                          <div id="${key}" class="card-body">
-                          
-                          </div>
-                      </div>
-                  </div>
-                    `;
-                key != "totalCredits"
-                  ? $("#row_root").append(rowStructrue)
-                  : $("#row_root").append(rowTotalCredits);
-                if (key != "totalCredits") {
+                  $("#row_root").append(rowStructrue);
                   for (let c = 0; c < value.length; c++) {
                     CourseId = value[c].CourseId.split("-");
                     Credit = value[c].Credit;
@@ -114,9 +102,37 @@ document.addEventListener(
                     );
                   }
                 } else {
+                  let rowTotalCredits = `
+                    <div class="row-md-6">
+                      <div class="card border-${config[key].color} mb-3">
+                          <div class="card-header">${config[key].cName}</div>
+                          <div class="card-body">
+                              <table class="table table-responsive">
+                                  <thead>
+                                      <tr>
+                                          <th style="text-align:center;" scope="col">已過學分</th>
+                                          <th style="text-align:center;" cope="col">未通過學分</th>
+                                          <th style="text-align:center;" scope="col">學期成績為計算之學分</th>
+                                          <th style="text-align:center;" scope="col">總學分</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody id="${key}">
+                                      
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+                    `;
+                  $("#row_root").append(rowTotalCredits);
                   $("#" + key).append(
                     `
-                    （含110-1）:<span class="badge rounded-pill bg-primary">${value}</span>
+                    <tr>
+                      <th style="text-align:center;" ><span class="badge bg-success">${value.pass.value}｜${value.pass.courses.length}科</span></th>
+                      <td style="text-align:center;" ><span class="badge bg-warning">${value.fail.value}｜${value.fail.courses.length}科</span> </td>
+                      <td style="text-align:center;" ><span class="badge bg-primary text-dark">${value.will.value}｜${value.will.courses.length}科</span></td>
+                      <th style="text-align:center;" ><span class="badge bg-info ">${value.total.value}</span></th>
+                    <tr>
                     `
                   );
                 }
@@ -132,7 +148,7 @@ document.addEventListener(
 document.getElementById("gpabtn").addEventListener("click", function () {
   Swal.fire({
     title: "GPA計算方式",
-    html:`
+    html: `
       <p style="text-align:left">一、80分以上為A等，換算為四。<br>
       二、70分以上未達80分為B等，換算為三。<br>
       三、60分以上未達70分為C等，換算為二。<br>
