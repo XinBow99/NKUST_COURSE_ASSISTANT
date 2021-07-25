@@ -27,7 +27,8 @@ def getcourseinformation():
         returnData = user.returnclassificationCourses()
         temp_[h] = returnData
         return jsonify(returnData)
-    except:
+    except Exception as e:
+        print(e)
         return abort(501, '請檢查mobile.nkust.edu.tw登入狀態')
 
 

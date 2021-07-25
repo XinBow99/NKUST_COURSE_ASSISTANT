@@ -36,7 +36,7 @@ document.addEventListener(
                 })
                 .catch((error) => {
                   console.log(error);
-                  Swal.showValidationMessage(`Request failed: ${error}`);
+                  Swal.showValidationMessage(`Request failed: ${error}，請檢查mobile.nkust.edu.tw登入狀態`);
                 });
             },
             allowOutsideClick: () => !Swal.isLoading(),
