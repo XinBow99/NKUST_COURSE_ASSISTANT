@@ -28,7 +28,7 @@ def getcourseinformation():
         temp_[h] = returnData
         return jsonify(returnData)
     except:
-        return abort(501, jsonify({'message':'請檢查mobile.nkust.edu.tw登入狀態'})) 
+        return abort(501, '請檢查mobile.nkust.edu.tw登入狀態') 
 
 
 app.run(host="0.0.0.0", port=5252,debug=True,ssl_context=('/home/sapcov/ssl/nginx.crt','/home/sapcov/ssl/nginx.key'))
