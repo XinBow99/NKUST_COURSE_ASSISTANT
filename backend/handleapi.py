@@ -15,20 +15,30 @@ def getcourseinformation():
     m = hashlib.md5()
     m.update(cookie.encode("utf-8"))
     h = m.hexdigest()
-    print('[USER->]',h)
+    print('[USER->]', h)
     if h in temp_:
         return jsonify(temp_[h])
     print('step2')
-    cookie = base64.b64decode(cookie).decode('utf8').replace('&',';')
+    cookie = base64.b64decode(cookie).decode('utf8').replace('&', ';')
 
-    #print(cookie)
+    # print(cookie)
     try:
         user = mobileNkust.NKUST(cookie)
         returnData = user.returnclassificationCourses()
+        returnData.update({'status': 1})
         temp_[h] = returnData
         return jsonify(returnData)
     except:
-        return abort(501, '請檢查mobile.nkust.edu.tw登入狀態') 
+        return abort(501)
 
 
-app.run(host="0.0.0.0", port=5252,debug=True,ssl_context=('/home/sapcov/ssl/nginx.crt','/home/sapcov/ssl/nginx.key'))
+@app.errorhandler(501)
+def page_not_found(error):
+    return jsonify({
+        'status': 501,
+        'message': '請檢查mobile.nkust.edu.tw登入狀態'
+    })
+
+
+app.run(host="0.0.0.0", port=5252, debug=True, ssl_context=(
+    '/home/sapcov/ssl/nginx.crt', '/home/sapcov/ssl/nginx.key'))
