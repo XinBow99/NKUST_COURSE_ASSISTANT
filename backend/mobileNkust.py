@@ -144,7 +144,6 @@ class NKUST:
                 # 分類
                 pass_or_faile_or_will = ""
                 # 有過
-                print(thisGrade)
                 if thisGrade == "合格":
                     pass_or_faile_or_will = 'pass'
                 # 正在打成績
@@ -194,7 +193,7 @@ class NKUST:
         gpa = ""
         if data == "合格" or data == "":
             return "-"
-        print('data:',data)
+        #print('data:',data)
         data = int(data)
         if data >= 80:
             gpa = "A｜4"
