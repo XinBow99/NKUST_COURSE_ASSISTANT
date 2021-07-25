@@ -150,7 +150,7 @@ class NKUST:
                 # 正在打成績
                 elif thisGrade == "":
                     pass_or_faile_or_will = 'will'
-                elif thisGrade >= 60:
+                elif int(thisGrade) >= 60:
                     pass_or_faile_or_will = 'pass'
                 # 沒過QQ
                 else:
