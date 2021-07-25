@@ -194,6 +194,7 @@ class NKUST:
         gpa = ""
         if data == "合格" or data == "":
             return "-"
+        print('data:',data)
         data = int(data)
         if data >= 80:
             gpa = "A｜4"
