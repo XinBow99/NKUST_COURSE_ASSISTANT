@@ -166,7 +166,7 @@ class NKUST:
                     thisGrade
                 )
                 course.update(
-                    {'gpa': self.gpaCalc(self.Grades[course['CourseName']])}
+                    {'gpa': self.gpaCalc(thisGrade)}
                 )
                 # 博雅
                 if '核心' in course['CourseName'] or '博雅' in course['CourseName'] or '通識微學分' in course['CourseName'] or '自主學習課程' in course['CourseName']:
