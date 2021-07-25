@@ -113,7 +113,7 @@ document.addEventListener(
                                       <tr>
                                           <th style="text-align:center;" scope="col">已過學分</th>
                                           <th style="text-align:center;" cope="col">未通過學分</th>
-                                          <th style="text-align:center;" scope="col">學期成績為計算之學分</th>
+                                          <th style="text-align:center;" scope="col">尚未修習之學分</th>
                                           <th style="text-align:center;" scope="col">總學分</th>
                                       </tr>
                                   </thead>
@@ -129,9 +129,9 @@ document.addEventListener(
                   $("#" + key).append(
                     `
                     <tr>
-                      <th style="text-align:center;" ><span class="badge bg-success">${value.pass.value}｜${value.pass.courses.length}科</span></th>
-                      <td style="text-align:center;" ><span class="badge bg-warning">${value.fail.value}｜${value.fail.courses.length}科</span> </td>
-                      <td style="text-align:center;" ><span class="badge bg-primary text-dark">${value.will.value}｜${value.will.courses.length}科</span></td>
+                      <th style="text-align:center;" ><span class="badge bg-success">學分：${value.pass.value}｜共 ${value.pass.courses.length} 科</span></th>
+                      <td style="text-align:center;" ><span class="badge bg-warning">學分：${value.fail.value}｜共 ${value.fail.courses.length} 科</span> </td>
+                      <td style="text-align:center;" ><span class="badge bg-primary">學分：${value.will.value}｜共 ${value.will.courses.length} 科</span></td>
                       <th style="text-align:center;" ><span class="badge bg-info ">${value.total.value}</span></th>
                     <tr>
                     `
