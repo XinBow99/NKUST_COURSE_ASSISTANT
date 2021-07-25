@@ -127,7 +127,7 @@ class NKUST:
                     'courses': [],
                     'value': 0
                 },
-                'will':{
+                'will': {
                     'courses': [],
                     'value': 0
                 },
@@ -141,22 +141,25 @@ class NKUST:
             for course in courses:
                 classification['totalCredits']['total']['value'] += course['Credit']
                 thisGrade = self.Grades[course['CourseName']]['grade']
-                #分類
+                # 分類
                 pass_or_faile_or_will = ""
-                #有過
-                if thisGrade >= 60 or thisGrade == "合格":
+                # 有過
+                if thisGrade == "合格":
                     pass_or_faile_or_will = 'pass'
-                #正在打成績
+                # 正在打成績
                 elif thisGrade == "":
                     pass_or_faile_or_will = 'will'
-                #沒過QQ
+                elif thisGrade >= 60:
+                    pass_or_faile_or_will = 'pass'
+                # 沒過QQ
                 else:
                     pass_or_faile_or_will = 'fail'
-                #加入課程
-                classification['totalCredits'][pass_or_faile_or_will]['courses'].append(course['CourseName'])
+                # 加入課程
+                classification['totalCredits'][pass_or_faile_or_will]['courses'].append(
+                    course['CourseName'])
                 # 加入課程學分
                 classification['totalCredits'][pass_or_faile_or_will]['value'] += course['Credit']
-                
+
                 # 幫course加入分數
                 course.update(
                     thisGrade
