@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, abort
 from flask_cors import CORS
 import base64
 import mobileNkust
@@ -22,10 +22,13 @@ def getcourseinformation():
     cookie = base64.b64decode(cookie).decode('utf8').replace('&',';')
 
     #print(cookie)
-    user = mobileNkust.NKUST(cookie)
-    returnData = user.returnclassificationCourses()
-    temp_[h] = returnData
-    return jsonify(returnData)
+    try:
+        user = mobileNkust.NKUST(cookie)
+        returnData = user.returnclassificationCourses()
+        temp_[h] = returnData
+        return jsonify(returnData)
+    except:
+        return abort(501, '請檢查mobile.nkust.edu.tw登入狀態') 
 
 
 app.run(host="0.0.0.0", port=5252,debug=True,ssl_context=('/home/sapcov/ssl/nginx.crt','/home/sapcov/ssl/nginx.key'))
