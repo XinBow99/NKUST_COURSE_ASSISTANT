@@ -11,6 +11,7 @@ document.addEventListener(
           Swal.fire({
             title: "取得分類之課程資料",
             showCancelButton: true,
+            backdrop: true,
             confirmButtonText: "取得！",
             cancelButtonText: "下次再用看看",
             showLoaderOnConfirm: true,
@@ -36,7 +37,9 @@ document.addEventListener(
                 })
                 .catch((error) => {
                   console.log(error);
-                  Swal.showValidationMessage(`Request failed: ${error}，請檢查mobile.nkust.edu.tw登入狀態，或是稍後再進行嘗試`);
+                  Swal.showValidationMessage(
+                    `Request failed: ${error}，請檢查mobile.nkust.edu.tw登入狀態，或是稍後再進行嘗試`
+                  );
                 });
             },
             allowOutsideClick: () => !Swal.isLoading(),
@@ -45,6 +48,7 @@ document.addEventListener(
               Swal.fire({
                 title: `課程資料載入完畢`,
                 confirmButtonText: "NEXT",
+                backdrop: true,
               });
               let courses = result.value;
               let config = {
@@ -113,7 +117,7 @@ document.addEventListener(
                                       <tr>
                                           <th style="text-align:center;" scope="col">已過學分</th>
                                           <th style="text-align:center;" cope="col">未通過學分</th>
-                                          <th style="text-align:center;" scope="col">尚未修習之學分</th>
+                                          <th style="text-align:center;" scope="col">未來或尚未修習之學分</th>
                                           <th style="text-align:center;" scope="col">總學分</th>
                                       </tr>
                                   </thead>
@@ -129,13 +133,85 @@ document.addEventListener(
                   $("#" + key).append(
                     `
                     <tr>
-                      <th style="text-align:center;" ><span class="badge bg-success">學分：${value.pass.value}｜共 ${value.pass.courses.length} 科</span></th>
-                      <td style="text-align:center;" ><span class="badge bg-warning">學分：${value.fail.value}｜共 ${value.fail.courses.length} 科</span> </td>
-                      <td style="text-align:center;" ><span class="badge bg-primary">學分：${value.will.value}｜共 ${value.will.courses.length} 科</span></td>
+                      <th style="text-align:center;" ><span id="pass_credits" class="btn badge bg-success">學分：${value.pass.value}｜共 ${value.pass.courses.length} 科</span></th>
+                      <td style="text-align:center;" ><span id="fail_credits" class="btn badge bg-warning">學分：${value.fail.value}｜共 ${value.fail.courses.length} 科</span> </td>
+                      <td style="text-align:center;" ><span id="will_credits" class="btn badge bg-primary">學分：${value.will.value}｜共 ${value.will.courses.length} 科</span></td>
                       <th style="text-align:center;" ><span class="badge bg-info ">${value.total.value}</span></th>
                     <tr>
                     `
                   );
+                  document
+                    .getElementById("pass_credits")
+                    .addEventListener("click", function () {
+                      let pass = "";
+                      for (
+                        let course = 0;
+                        course < value.pass.courses.length;
+                        course++
+                      ) {
+                        pass += `<span class="badge bg-success me-3">${value.pass.courses[course]}</span><br>`;
+                      }
+                      Swal.fire({
+                        title: "通過之學分",
+                        html:
+                          pass +
+                          `
+                        <p style="text-align:left">
+                        詳細請依校方公佈為主，本應用僅提供參考之用圖。<br>
+                        <a href="https://mobile.nkust.edu.tw/">本應用參考之數據來源</a>
+                        </p>
+                        `,
+                        backdrop: true,
+                      });
+                    });
+                  document
+                    .getElementById("fail_credits")
+                    .addEventListener("click", function () {
+                      let fail = "";
+                      for (
+                        let course = 0;
+                        course < value.fail.courses.length;
+                        course++
+                      ) {
+                        fail += `<span class="badge bg-warning me-3">${value.fail.courses[course]}</span><br>`;
+                      }
+                      Swal.fire({
+                        title: "未通過之學分",
+                        html:
+                          fail +
+                          `
+                        <p style="text-align:left">
+                        詳細請依校方公佈為主，本應用僅提供參考之用圖。<br>
+                        <a href="https://mobile.nkust.edu.tw/">本應用參考之數據來源</a>
+                        </p>
+                        `,
+                        backdrop: true,
+                      });
+                    });
+                  document
+                    .getElementById("will_credits")
+                    .addEventListener("click", function () {
+                      let will = "";
+                      for (
+                        let course = 0;
+                        course < value.will.courses.length;
+                        course++
+                      ) {
+                        will += `<span class="badge bg-primary me-3">${value.will.courses[course]}</span><br>`;
+                      }
+                      Swal.fire({
+                        backdrop: true,
+                        title: "尚未修習之學分",
+                        html:
+                          will +
+                          `
+                        <p style="text-align:left">
+                        詳細請依校方公佈為主，本應用僅提供參考之用圖。<br>
+                        <a href="https://mobile.nkust.edu.tw/">本應用參考之數據來源</a>
+                        </p>
+                        `,
+                      });
+                    });
                 }
               });
             }
@@ -158,5 +234,35 @@ document.getElementById("gpabtn").addEventListener("click", function () {
       <a href="https://rule.nkust.edu.tw/var/file/33/1033/img/460/247863933.pdf">學校之規範</a>
       </p>
       `,
+    backdrop: true,
+  });
+});
+document.getElementById("about").addEventListener("click", function () {
+  Swal.fire({
+    title: "聲明",
+    html: `
+      <p style="text-align:left">
+      詳細請依校方公佈為主，本應用僅提供參考之用圖。<br>
+      <a href="https://mobile.nkust.edu.tw/">本應用參考之數據來源</a>
+      </p>
+      `,
+    backdrop: true,
+  });
+});
+zheckinbtn;
+document.getElementById("zheckinbtn").addEventListener("click", function () {
+  Swal.fire({
+    title: "快捷點名",
+    html: `
+    <input id="checkin-account" class="swal2-input" placeholder="學號@nkust.edu.tw">
+    <input id="checkin-password" class="swal2-input" placeholder="password">
+      <p style="text-align:left" class="mt-3">
+      學號英文需大寫->C107@nksut.edu.tw<br>
+      尚未實施，其應用於點名之用圖，參考之數據來源<br>
+      <a href="https://www.zuvio.com.tw/">zuvio</a>
+      <a href="https://webap.nkust.edu.tw/nkust/">校務行政系統</a>
+      </p>
+      `,
+    backdrop: true,
   });
 });
