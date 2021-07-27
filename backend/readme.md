@@ -8,6 +8,7 @@ If you wnat run this server on localhost or test, please remove
     ssl_context=('ssl/nginx.crt', 'ssl/nginx.key')
 ```
 at handleapi.py file line 35, and replace https://bikehub.54ucl.com:5252 to your domain name or ip(127.0.0.1) at chrome/content.js file.
+
 ---
 ## webap.py test
 ```bash
@@ -23,6 +24,7 @@ test = WEBAP('stdId', 'password', '109-2')
 replace stdId and password to your school account information.
 ### webap result
 ![webap](./photos/webap.png)
+
 ---
 ## zuvio.py test
 ```bash
@@ -39,6 +41,7 @@ ZUVIO('@nkust.edu.tw', 'password', '109-2')
 ```
 ### zuvio result
 ![zuvio](./photos/zuvio.png)
+
 ---
 ## checkIn.py
 this file is shown how to call zuvio.py function to run check-in actions, when you want to build a checkIn Server.
