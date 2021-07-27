@@ -7,7 +7,7 @@ If you wnat run this server on localhost or test, please remove
 ```python
     ssl_context=('ssl/nginx.crt', 'ssl/nginx.key')
 ```
-at handleapi.py file line 35, and replace https://bikehub.54ucl.com:5252 to your domain name or ip(127.0.0.1) at chrome/content.js file.
+at handleapi.py file line 35, and replace https://bikehub.54ucl.com:5252 to your domain name or ip(127.0.0.1) in chrome/content.js file.
 
 ---
 ## webap.py test
