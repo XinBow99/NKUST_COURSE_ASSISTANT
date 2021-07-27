@@ -174,4 +174,6 @@ class WEBAP:
 
 
 if __name__ == "__main__":
-    WEBAP('', '', '109-2').getCurrentCourse()
+    test = WEBAP('stdId', 'password', '109-2')
+    test.getCourseService()
+    test.getCurrentCourse()

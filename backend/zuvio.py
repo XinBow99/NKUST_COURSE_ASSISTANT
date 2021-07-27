@@ -149,4 +149,4 @@ class ZUVIO:
 
 
 if __name__ == "__main__":
-    ZUVIO('', '', '109-2')
+    ZUVIO('@nkust.edu.tw', '', '109-2')

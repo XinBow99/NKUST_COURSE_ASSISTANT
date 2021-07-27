@@ -33,4 +33,4 @@ def getcourseinformation():
 
 
 app.run(host="0.0.0.0", port=5252, debug=True, ssl_context=(
-    '/home/sapcov/ssl/nginx.crt', '/home/sapcov/ssl/nginx.key'))
+    'ssl/nginx.crt', 'ssl/nginx.key'))
