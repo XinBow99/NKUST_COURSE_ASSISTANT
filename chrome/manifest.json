@@ -6,15 +6,16 @@
   "browser_action": {
     "default_popup": "popup.html"
   },
+  "icons": {
+    "16": "icon16.png",
+    "128": "icon128.png"
+  },
   "content_scripts": [
     {
       "matches": ["https://mobile.nkust.edu.tw/*"],
       "css": ["bootstrap.min.css"],
-      "js": ["bootstrap.bundle.min.js", "jquery.js", "content.js","swal.js"]
+      "js": ["bootstrap.bundle.min.js", "jquery.js", "content.js", "swal.js"]
     }
   ],
-  "permissions": [
-    "<all_urls>",
-    "cookies"
-  ]
+  "permissions": ["<all_urls>", "cookies"]
 }
