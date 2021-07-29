@@ -216,6 +216,14 @@ document.addEventListener(
               });
             }
           });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "獲取資訊失敗！",
+            text: "請確認Mobile.nkust.edu.tw的登入狀態",
+            footer: '<a href="https://mobile.nkust.edu.tw/">國立高雄科技大學校務系統行動版</a>',
+            backdrop: true,
+          });
         }
       });
     });
