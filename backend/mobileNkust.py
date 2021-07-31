@@ -96,9 +96,14 @@ class NKUST:
                 _course = []
                 for td in BeautifulSoup(str(course), 'html.parser').find_all("td"):
                     _course.append(td.text)
-                GradesToJson[_course[0]] = {
-                    'grade': _course[6]
-                }
+                if _course[0] not in GradesToJson:
+                    GradesToJson[_course[0]] = {
+                        'grade': _course[6]
+                    }
+                else:
+                    GradesToJson[_course[0]+'-'+yms] = {
+                        'grade': _course[6]
+                    }
 
             # Grades.append(
             #    json.loads(GradestringtoJson)
@@ -193,7 +198,7 @@ class NKUST:
         gpa = ""
         if data == "合格" or data == "":
             return "-"
-        #print('data:',data)
+        # print('data:',data)
         data = int(data)
         if data >= 80:
             gpa = "A｜4"
