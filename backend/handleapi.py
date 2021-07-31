@@ -18,18 +18,19 @@ def getcourseinformation():
     print('[USER->]', h)
     if h in temp_:
         return jsonify(temp_[h])
-    print('step2')
-    cookie = base64.b64decode(cookie).decode('utf8').replace('&', ';')
+    try:
+        print('step2')
+        cookie = base64.b64decode(cookie).decode('utf8').replace('&', ';')
 
-    # print(cookie)
-    #try:
-    user = mobileNkust.NKUST(cookie)
-    returnData = user.returnclassificationCourses()
-    temp_[h] = returnData
-    return jsonify(returnData)
-    #except Exception as e:
-    #    print(e)
-    #    return abort(501, '請檢查mobile.nkust.edu.tw登入狀態')
+        # print(cookie)
+        #try:
+        user = mobileNkust.NKUST(cookie)
+        returnData = user.returnclassificationCourses()
+        temp_[h] = returnData
+        return jsonify(returnData)
+    except Exception as e:
+        print('請檢查mobile.nkust.edu.tw登入狀態')
+        return abort(501, '請檢查mobile.nkust.edu.tw登入狀態')
 
 
 app.run(host="0.0.0.0", port=5252, debug=True, ssl_context=(
