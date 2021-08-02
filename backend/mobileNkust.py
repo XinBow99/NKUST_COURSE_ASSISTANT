@@ -116,36 +116,54 @@ class NKUST:
         print('[分類課程中...]')
         # according to webap
         classification = {
-            'cla': [],  # 博雅教育中心
-            'cgs': [],  # 基礎教育中心
-            'flec': [],  # 外語教育中心
-            'create': [],  # 創創
-            'majors': [],  # 專業
-            'sport': [],  # 體育
-            'service': [],  # 服務教育
-            'totalCredits': {
-                'pass': {
-                    'courses': [],
-                    'value': 0
-                },
-                'fail': {
-                    'courses': [],
-                    'value': 0
-                },
-                'will': {
-                    'courses': [],
-                    'value': 0
-                },
-                'total': {
-                    'value': 0
+            'Courses': {
+                'cla': [],  # 博雅教育中心
+                'cgs': [],  # 基礎教育中心
+                'flec': [],  # 外語教育中心
+                'create': [],  # 創創
+                'majors': [],  # 專業
+                'sp': [],  # 師培
+                'sport': [],  # 體育
+                'service': [],  # 服務教育
+                'totalCredits': {
+                    'pass': {
+                        'courses': [],
+                        'value': 0
+                    },
+                    'fail': {
+                        'courses': [],
+                        'value': 0
+                    },
+                    'will': {
+                        'courses': [],
+                        'value': 0
+                    },
+                    'total': {
+                        'value': 0
+                    }
                 }
+            },
+            'Config': {
+                'cla': {'cName': "博雅教育中心", 'color': "primary"},
+                'cgs': {'cName': "基礎教育中心", 'color': "secondary"},
+                'flec': {'cName': "外語教育中心", 'color': "success"},
+                'create': {'cName': "創創中心", 'color': "danger"},
+                'sp': {'cName': "師資培育中心", 'color': "primary"},
+                'majors': {'cName': "非通識之科目", 'color': "warning"},
+                'sport': {'cName': "體育", 'color': "info"},
+                'service': {'cName': "服務教育", 'color': "primary"},
+                'totalCredits': {'cName': "詳細學分｜含110-1學期", 'color': "dark"},
             }
         }
         for courses in self.Course:
             # 未來改用CourseId
             for course in courses:
-                classification['totalCredits']['total']['value'] += course['Credit']
-                thisGrade = self.Grades[course['CourseName']]['grade']
+                classification['Courses']['totalCredits']['total']['value'] += course['Credit']
+                thisGrade = ""
+                if course['CourseName'] in self.Grades:
+                    thisGrade = self.Grades[course['CourseName']]['grade']
+                else:
+                    self.Grades[course['CourseName']] = {'grade':thisGrade}
                 # 分類
                 pass_or_faile_or_will = ""
                 # 有過
@@ -160,10 +178,10 @@ class NKUST:
                 else:
                     pass_or_faile_or_will = 'fail'
                 # 加入課程
-                classification['totalCredits'][pass_or_faile_or_will]['courses'].append(
+                classification['Courses']['totalCredits'][pass_or_faile_or_will]['courses'].append(
                     course['CourseName'])
                 # 加入課程學分
-                classification['totalCredits'][pass_or_faile_or_will]['value'] += course['Credit']
+                classification['Courses']['totalCredits'][pass_or_faile_or_will]['value'] += course['Credit']
 
                 # 幫course加入分數
                 course.update(
@@ -174,24 +192,27 @@ class NKUST:
                 )
                 # 博雅
                 if '核心' in course['CourseName'] or '博雅' in course['CourseName'] or '通識微學分' in course['CourseName'] or '自主學習課程' in course['CourseName']:
-                    classification['cla'].append(course)
+                    classification['Courses']['cla'].append(course)
                 # 基礎教育
                 elif '大學國語文' in course['CourseName'] or '實務應用文' in course['CourseName']:
-                    classification['cgs'].append(course)
+                    classification['Courses']['cgs'].append(course)
                 # 外語
-                elif '外語教育中心' in course['ClassNameAbr'] or '語言教學中心' in course['ClassNameAbr']:
-                    classification['flec'].append(course)
+                elif '外語' in course['ClassNameAbr'] or '語言' in course['ClassNameAbr']:
+                    classification['Courses']['flec'].append(course)
+                # 師資培育中心
+                elif '師培' in course['ClassNameAbr']:
+                    classification['Courses']['sp'].append(course)
                 # 創創
                 elif '創創' in course['ClassNameAbr']:
-                    classification['create'].append(course)
+                    classification['Courses']['create'].append(course)
                 # 體育
                 elif '體育' in course['CourseName']:
-                    classification['sport'].append(course)
+                    classification['Courses']['sport'].append(course)
                 # 服務教育
                 elif '服務教育' in course['CourseName']:
-                    classification['service'].append(course)
+                    classification['Courses']['service'].append(course)
                 else:
-                    classification['majors'].append(course)
+                    classification['Courses']['majors'].append(course)
         self.classificationCourses = classification
 
     def gpaCalc(self, data):
