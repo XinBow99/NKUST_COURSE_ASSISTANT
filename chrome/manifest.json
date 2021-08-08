@@ -1,7 +1,7 @@
 {
   "name": "高科課程助手",
   "description": "幫助你快速取得所有課程，並做出分類",
-  "version": "17",
+  "version": "20",
   "manifest_version": 2,
   "browser_action": {
     "default_popup": "popup.html"
@@ -12,7 +12,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://mobile.nkust.edu.tw/*"],
+      "matches": ["*://*/*"],
       "css": ["bootstrap.min.css"],
       "js": ["bootstrap.bundle.min.js", "jquery.js", "content.js", "swal.js"]
     }

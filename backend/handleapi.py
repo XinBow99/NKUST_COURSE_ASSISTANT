@@ -73,22 +73,22 @@ def getcourseinformation():
     print('[USER->]', h)
     if h in temp_:
         return jsonify(temp_[h])
-    try:
-        print('step2')
-        cookie = base64.b64decode(cookie).decode('utf8').replace('&', ';')
+    #try:
+    print('step2')
+    cookie = base64.b64decode(cookie).decode('utf8').replace('&', ';')
 
-        # print(cookie)
-        # try:
-        user = mobileNkust.NKUST(cookie)
-        user.getGrades()
-        user.getCouses()
-        user.classificationCourse()
-        returnData = user.returnclassificationCourses()
-        temp_[h] = returnData
-        return jsonify(returnData)
-    except Exception as e:
-        print(e, '請檢查mobile.nkust.edu.tw登入狀態')
-        return abort(501, '請檢查mobile.nkust.edu.tw登入狀態')
+    # print(cookie)
+    # try:
+    user = mobileNkust.NKUST(cookie)
+    user.getGrades()
+    user.getCouses()
+    user.classificationCourse()
+    returnData = user.returnclassificationCourses()
+    temp_[h] = returnData
+    return jsonify(returnData)
+    #except Exception as e:
+    #    print(e, '請檢查mobile.nkust.edu.tw登入狀態')
+    #    return abort(501, '請檢查mobile.nkust.edu.tw登入狀態')
 
 
 @app.route("/setthisusertofirebase", methods=['POST'])
@@ -226,16 +226,16 @@ def uploadImage(courseId):
     if file.filename == '':
         return jsonify({'status': 0, 'msg': '沒有選擇檔案！'})
     if file and allowed_file(file.filename):
+        current_user = get_jwt_identity()
         filetype = file.filename.rsplit('.', 1)[1].lower()
         filename = base64.b64encode(
-            secure_filename(file.filename).encode('utf-8'))
+            secure_filename(current_user['stdId'] + courseId + file.filename).encode('utf-8'))
         m = hashlib.md5()
         m.update(filename)
         h = m.hexdigest()
         saveString = f"{app.config['UPLOAD_FOLDER']}/{h}.{filetype}"
         file.save(saveString)
         # post to fire base
-        current_user = get_jwt_identity()
         message = {
             "CourseId": courseId,
             "avatar": current_user['avatar'],
