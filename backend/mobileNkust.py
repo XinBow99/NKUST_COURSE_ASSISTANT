@@ -1,5 +1,6 @@
 from typing import Text
-import bs4
+import hashlib
+import base64
 import requests
 from bs4 import BeautifulSoup
 import json
@@ -15,18 +16,27 @@ class NKUST:
     def __init__(self, cookies) -> None:
         self.AspNetCoreCookies = cookies
         self.getYmsOptions()
-        self.getGrades()
-        self.getCouses()
-        self.classificationCourse()
 
-    def getIndex(self):
+    def getStudentId(self):
         res = requests.get(
             url=NKUST_URL.index,
             headers={
                 'Cookie': '.AspNetCore.Cookies={}'.format(self.AspNetCoreCookies)
             }
         )
-        print(res.text)
+        stdIndex = BeautifulSoup(res.text, 'html.parser').find(
+            'li', class_="user-header")
+        stdTagP = BeautifulSoup(str(stdIndex), 'html.parser').find(
+            'p').text.split(' ')[0]
+        # set user name
+        encUsername = base64.b64encode(stdTagP.encode("utf-8"))
+        m = hashlib.md5()
+        m.update(f"{encUsername}".encode("utf-8"))
+        h = m.hexdigest()
+        m.update(f"{ h[0:5] + h + h[10:15]}".encode("utf-8"))
+        h = m.hexdigest()
+        self.stdId = h
+        print(h)
 
     def getYmsOptions(self):
         res = requests.get(
@@ -163,7 +173,7 @@ class NKUST:
                 if course['CourseName'] in self.Grades:
                     thisGrade = self.Grades[course['CourseName']]['grade']
                 else:
-                    self.Grades[course['CourseName']] = {'grade':thisGrade}
+                    self.Grades[course['CourseName']] = {'grade': thisGrade}
                 # 分類
                 pass_or_faile_or_will = ""
                 # 有過
@@ -257,6 +267,9 @@ class NKUST:
 
     def returnclassificationCourses(self):
         return self.classificationCourses
+
+    def returnCourseAndStdId(self):
+        return self.Course, self.stdId
 
 
 if __name__ == "__main__":

@@ -1,5 +1,99 @@
 //const api_url = "https://bikehub.54ucl.com:5252";
-const api_url = "http://127.0.0.1:5252";
+const api_url = "https://bikehub.54ucl.com:5252";
+async function enjoyChatRoom() {
+  // 加入聊天室
+  // set user nickname
+  const { value: nickname } = await Swal.fire({
+    title: "輸入你的暱稱",
+    input: "text",
+    inputLabel: "暱稱！最多三十字",
+    inputPlaceholder: "Mr.Dr.Professor Patrick",
+    inputAttributes: {
+      maxlength: 30,
+      autocapitalize: "off",
+      autocorrect: "off",
+    },
+  });
+  // if nickname
+  if (nickname) {
+    // enter avatar link
+    const { value: avatar } = await Swal.fire({
+      title: "輸入你的大頭貼網址",
+      input: "text",
+      inputLabel: "用隨便一張照片來當你的大頭貼吧！",
+      inputPlaceholder: "https://avatars.githubusercontent.com/u/36734430?v=4",
+    });
+    // if avatar
+    if (avatar) {
+      // get course
+      getCookie().then((data) => {
+        // varible of mobile.nkust.edu.tw cookies
+        let keys = {};
+        // check mobile cookies
+        if (Object.keys(data).length > 0) {
+          // save mobile cookies
+          data.forEach((nkustCookies) => {
+            keys[nkustCookies.name] = nkustCookies.value;
+          });
+          // show alert
+          Swal.fire({
+            title: "是否啟用聊天室功能",
+            showCancelButton: true,
+            backdrop: true,
+            text: "此動作會將您的學號及選修之課程（不包含分數等資訊）寫入資料庫內！",
+            confirmButtonText: "啟用！",
+            cancelButtonText: "下次再用看看",
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+              return fetch(`${api_url}/setthisusertofirebase`, {
+                method: "POST",
+                body: new URLSearchParams({
+                  data: btoa(new URLSearchParams(keys)),
+                  avatar: avatar,
+                  nickname: nickname,
+                }),
+                headers: {
+                  "Content-Type":
+                    "application/x-www-form-urlencoded; charset=utf-8",
+                },
+              })
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error(response.statusText);
+                  }
+                  return response.json();
+                })
+                .catch((error) => {
+                  console.log(error);
+                  Swal.showValidationMessage(
+                    `Request failed: ${error}，請檢查mobile.nkust.edu.tw登入狀態，或是稍後再進行嘗試`
+                  );
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: `加入聊天室成功！`,
+                confirmButtonText: "NEXT",
+                backdrop: true,
+              });
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "獲取資訊失敗！",
+            text: "請確認Mobile.nkust.edu.tw的登入狀態",
+            footer:
+              '<a href="https://mobile.nkust.edu.tw/" target="_blank">國立高雄科技大學校務系統行動版</a>',
+            backdrop: true,
+          });
+        }
+      });
+    }
+  }
+}
 $(function () {
   // Handler for .ready() called.
   // static.
@@ -10,6 +104,10 @@ $(function () {
       html: '<p style="text-align:left"> 詳細請依校方公佈為主，本應用僅提供參考之用圖。<br> <a href="https://mobile.nkust.edu.tw/">本應用參考之數據來源</a> </p>',
       backdrop: true,
     });
+  });
+  // add new button
+  $("#addtofire").click(() => {
+    enjoyChatRoom();
   });
   //step1 load buttons information
   // Fetch button information function
