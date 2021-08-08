@@ -214,6 +214,7 @@ def verify_token():
 
 
 @app.route('/uploadimage/<courseId>', methods=['POST'])
+@jwt_required()
 def uploadImage(courseId):
     print(courseId)
     # check if the post request has the file part
