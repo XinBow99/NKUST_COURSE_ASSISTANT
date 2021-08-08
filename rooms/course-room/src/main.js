@@ -33,7 +33,7 @@ Vue.component('system-message', {
   `
 })
 
-Axios.defaults.baseURL = 'http://127.0.0.1:5252'
+Axios.defaults.baseURL = 'https://bikehub.54ucl.com:5252'
 Vue.prototype.$http = Axios
 // set axios access token
 const accessToken = localStorage.getItem('accessToken')

@@ -54,7 +54,6 @@ def getUserInformation(userId):
 
 
 def postUserMessage(postInformation):
-    # /nkust/courses/109-2-UN011431-00813-01/chats/history/ie6OZbTcXlttDcXaVSSA
     CourseId = postInformation['CourseId']
     chats = db.collection("nkust").document(
         "courses").collection(CourseId).document("chats")
@@ -67,12 +66,4 @@ def postUserMessage(postInformation):
 
 if __name__ == "__main__":
     postUserMessage(
-        {
-            "CourseId": "109-2-UN011431-00813-01",
-            "avatar": "https://avatars.githubusercontent.com/u/36734430?v=4",
-            "createAt": datetime.now(),
-            "message": "厲害了",
-            "stdId": "4b7b71973f928ef7ba9108a50e7f98bd",
-            "stdNickName": "派",
-        }
     )

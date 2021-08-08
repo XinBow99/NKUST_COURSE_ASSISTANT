@@ -97,7 +97,32 @@ export default new Vuex.Store({
         })
         .catch((error) => {
           console.log(error.status_text)
-          Swal.fire('發布留言失敗', '', 'error')
+          Swal.fire('發布留言失敗', '登入時間過期！', 'error')
+          router.push('login')
+        })
+    },
+    async postImage ({ commit }, ImageInfo) {
+      const singleMessage = {
+        CourseId: ImageInfo.CourseId,
+        avatar: ImageInfo.avatar,
+        message: ImageInfo.message,
+        stdId: ImageInfo.stdId,
+        stdNickName: ImageInfo.stdNickName
+      }
+      await Axios.post(
+        `/uploadimage/${singleMessage.CourseId}`,
+        singleMessage.message
+      )
+        .then((response) => {
+          if (response.data.status === 1) {
+            console.log(response.data.msg)
+          } else {
+            Swal.fire('發布圖片失敗', response.data.msg, 'error')
+          }
+        })
+        .catch((error) => {
+          console.log(error.status_text)
+          Swal.fire('發布圖片失敗', '登入時間過期！', 'error')
           router.push('login')
         })
     }

@@ -1,20 +1,25 @@
+from datetime import datetime
+import html
+import requests
+import json
+import firebase
+import hashlib
+import mobileNkust
+import base64
+import re
 from flask import Flask, request, jsonify, abort
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
+from werkzeug.utils import secure_filename
 
-import re
-import base64
-import mobileNkust
-import hashlib
-import firebase
-import json
-import requests
-import html
+UPLOAD_FOLDER = '/home/sapcov/Topic_Image/pics'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
-from datetime import datetime
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 jwt = JWTManager()
 # import JWT secret
 JWTConfig = json.loads(open("./config/JWT.json").read())
@@ -33,6 +38,11 @@ jwt.init_app(app)
 CORS(app)
 temp_ = {}
 setTemp_ = {}
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.route("/getbuttonsinformation", methods=['GET'])
@@ -200,6 +210,41 @@ def verify_token():
     print("[驗證成功]用戶->", current_user['stdId'],
           '｜', current_user['stdNickName'])
     return jsonify({'success': True}), 200
+
+
+@app.route('/uploadimage/<courseId>', methods=['POST'])
+def uploadImage(courseId):
+    print(courseId)
+    # check if the post request has the file part
+    if 'file' not in request.files:
+        return jsonify({'status': 0, 'msg': '沒有選擇檔案！'})
+    file = request.files['file']
+    # If the user does not select a file, the browser submits an
+    # empty file without a filename.
+    if file.filename == '':
+        return jsonify({'status': 0, 'msg': '沒有選擇檔案！'})
+    if file and allowed_file(file.filename):
+        filetype = file.filename.rsplit('.', 1)[1].lower()
+        filename = base64.b64encode(
+            secure_filename(file.filename).encode('utf-8'))
+        m = hashlib.md5()
+        m.update(filename)
+        h = m.hexdigest()
+        saveString = f"{app.config['UPLOAD_FOLDER']}/{h}.{filetype}"
+        file.save(saveString)
+        # post to fire base
+        current_user = get_jwt_identity()
+        fireHref = f'<a href="{h}.{filetype}" target="_blank"><img src="{h}.{filetype}" data-img="true" data-height="0" style="max-width:100%;max-height:400px"></a>'
+        message = {
+            "CourseId": courseId,
+            "avatar": current_user['avatar'],
+            "createAt": datetime.now(),
+            "message": fireHref,
+            "stdId": current_user['stdId'],
+            "stdNickName": current_user['stdNickName'],
+        }
+    firebase.postUserMessage(message)
+    return jsonify({'status': 1, 'msg': '上傳成功！'})
 
 
 app.run(host="0.0.0.0", port=5252, debug=True)
