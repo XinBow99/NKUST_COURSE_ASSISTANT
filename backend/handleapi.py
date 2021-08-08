@@ -196,6 +196,7 @@ def postMessage():
         "avatar": current_user['avatar'],
         "createAt": datetime.now(),
         "message": userSendMessage,
+        "messageType": "text",
         "stdId": current_user['stdId'],
         "stdNickName": current_user['stdNickName'],
     }
@@ -234,12 +235,12 @@ def uploadImage(courseId):
         file.save(saveString)
         # post to fire base
         current_user = get_jwt_identity()
-        fireHref = f'<a href="{h}.{filetype}" target="_blank"><img src="{h}.{filetype}" data-img="true" data-height="0" style="max-width:100%;max-height:400px"></a>'
         message = {
             "CourseId": courseId,
             "avatar": current_user['avatar'],
             "createAt": datetime.now(),
-            "message": fireHref,
+            "message": f"https://bikehub.54ucl.com:444/pics/{h}.{filetype}",
+            "messageType": "img",
             "stdId": current_user['stdId'],
             "stdNickName": current_user['stdNickName'],
         }

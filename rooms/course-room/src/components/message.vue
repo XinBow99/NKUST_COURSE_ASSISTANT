@@ -44,7 +44,15 @@
               class="std_message_content__text"
               v-bind:class="[checkIsMe(chatMessageInfo) ? 'right' : 'left']"
               data-id="msg_content"
+              v-if="chatMessageInfo.messageType && chatMessageInfo.messageType == 'img'"
+            ><a v-bind:href="chatMessageInfo.message" target="_blank"><img v-bind:src="chatMessageInfo.message" data-img="true" data-height="0" style="max-width:100%;max-height:400px"></a></div>
+            <div
+              class="std_message_content__text"
+              v-bind:class="[checkIsMe(chatMessageInfo) ? 'right' : 'left']"
+              data-id="msg_content"
+              v-else
             >{{ chatMessageInfo.message }}</div>
+
           </div>
         </div>
       </div>
