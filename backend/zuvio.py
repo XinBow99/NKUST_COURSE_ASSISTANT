@@ -145,7 +145,7 @@ class ZUVIO:
                         print('[自動簽到完成]')
                     break
         else:
-            print('[目前無課程需簽到]')
+            print('[目前無課程需簽到]!')
 
 
 if __name__ == "__main__":
