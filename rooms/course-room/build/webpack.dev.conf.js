@@ -32,8 +32,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     },
     disableHostCheck: true,
     https: {
-      key: fs.readFileSync('/home/sapcov/ssl/nginx.key'),
-      cert: fs.readFileSync('/home/sapcov/ssl/nginx.crt'),
+      key: fs.readFileSync('your path/nginx.key'),
+      cert: fs.readFileSync('your path/nginx.crt'),
     },
     hot: true,
     contentBase: false, // since we use CopyWebpackPlugin.

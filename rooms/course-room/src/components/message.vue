@@ -44,15 +44,25 @@
               class="std_message_content__text"
               v-bind:class="[checkIsMe(chatMessageInfo) ? 'right' : 'left']"
               data-id="msg_content"
-              v-if="chatMessageInfo.messageType && chatMessageInfo.messageType == 'img'"
-            ><a v-bind:href="chatMessageInfo.message" target="_blank"><img v-bind:src="chatMessageInfo.message" data-img="true" data-height="0" style="max-width:100%;max-height:400px"></a></div>
+              v-if="
+                chatMessageInfo.messageType &&
+                chatMessageInfo.messageType == 'img'
+              "
+            >
+              <a v-bind:href="chatMessageInfo.message" target="_blank"
+                ><img
+                  v-bind:src="chatMessageInfo.message"
+                  data-img="true"
+                  data-height="0"
+                  style="max-width: 100%; max-height: 400px"
+              /></a>
+            </div>
             <div
               class="std_message_content__text"
               v-bind:class="[checkIsMe(chatMessageInfo) ? 'right' : 'left']"
               data-id="msg_content"
               v-else
             >{{ chatMessageInfo.message }}</div>
-
           </div>
         </div>
       </div>
@@ -61,7 +71,7 @@
     <div class="message_inputbox" id="im_inputbox">
       <div class="input_toolbar">
         <div class="btn_somewhere upload_btn toolbar-btn">
-          <img src="https://bikehub.54ucl.com:444/pics/mwOnGC4.png" />
+          <img :src="this.apiHost + '/pics/mwOnGC4.png'" />
           <input
             type="file"
             title="上傳圖片"
@@ -94,6 +104,7 @@
 
 <script>
 import { schoolCollection } from '../db'
+import apiSetting from '../apiConfig'
 import moment from 'moment'
 export default {
   name: 'HelloWorld',
@@ -101,6 +112,7 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
+      apiHost: apiSetting.host,
       chatsHistory: [],
       sendmessage: null,
       formData: new FormData()
@@ -161,11 +173,11 @@ export default {
         this.$bind(
           'chatsHistory',
           schoolCollection
-            .doc('courses')
-            .collection(this.courseId)
-            .doc('chats')
-            .collection('history')
-            .orderBy('createAt', 'asc')
+            .doc('')
+            .collection()
+            .doc('')
+            .collection('')
+            .orderBy('', 'asc')
         )
       }
     }

@@ -3,6 +3,9 @@ node_modules/
 __pycache__/
 /__pycache__
 backend/config/
+backend/logs/
+*apiConfig.js*
+*db.js*
 /dist/
 npm-debug.log*
 yarn-debug.log*

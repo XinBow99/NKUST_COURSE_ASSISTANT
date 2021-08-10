@@ -8,6 +8,7 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import { firestorePlugin } from 'vuefire'
 //
 import store from './store'
+import apiSetting from './apiConfig'
 import Axios from 'axios'
 import VueChatScroll from 'vue-chat-scroll'
 // import bootstrap css
@@ -33,7 +34,7 @@ Vue.component('system-message', {
   `
 })
 
-Axios.defaults.baseURL = 'https://bikehub.54ucl.com:5252'
+Axios.defaults.baseURL = apiSetting.host
 Vue.prototype.$http = Axios
 // set axios access token
 const accessToken = localStorage.getItem('accessToken')

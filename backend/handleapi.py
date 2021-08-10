@@ -13,16 +13,15 @@ from flask_cors import CORS
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = '/home/sapcov/Topic_Image/pics'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 jwt = JWTManager()
 # import JWT secret
 JWTConfig = json.loads(open("./config/JWT.json").read())
+appConfig = json.loads(open("./config/appConfig.json").read())
+app.config['UPLOAD_FOLDER'] = appConfig['UPLOAD_FOLDER']
+ALLOWED_EXTENSIONS = appConfig['ALLOWED_EXTENSIONS']
 # 計算金鑰
 key = JWTConfig['key1'] + JWTConfig['key2'] + \
     JWTConfig['key3']+JWTConfig['key4']+JWTConfig['key5']
@@ -246,7 +245,7 @@ def uploadImage(courseId):
             "CourseId": courseId,
             "avatar": current_user['avatar'],
             "createAt": datetime.now(),
-            "message": f"https://bikehub.54ucl.com:444/pics/{h}.{filetype}",
+            "message": f"{appConfig['pictureDomain']}/pics/{h}.{filetype}",
             "messageType": "img",
             "stdId": current_user['stdId'],
             "stdNickName": current_user['stdNickName'],
@@ -263,17 +262,17 @@ def after_request(response):
 
     saveLog = {
         'ip': base64.b64encode(str(request.remote_addr).encode('utf-8')).decode('utf-8'),
-        'method':base64.b64encode(str(request.method).encode('utf-8')).decode('utf-8'),
+        'method': base64.b64encode(str(request.method).encode('utf-8')).decode('utf-8'),
         'requestUrl': base64.b64encode(str(request.url).encode('utf-8')).decode('utf-8'),
         'header': base64.b64encode(str(request.headers).encode('utf-8')).decode('utf-8'),
         'requestData': base64.b64encode(str(request.data).encode('utf-8')).decode('utf-8'),
         'responseData': base64.b64encode(str(response.data).encode('utf-8')).decode('utf-8')
     }
     filename = secure_filename(str(datetime.now()))
-    open(f'./logs/{filename}.json','w').write(json.dumps(saveLog))
+    open(f'./logs/{filename}.json', 'w').write(json.dumps(saveLog))
     response.headers['Log'] = True
     return response
 
 
 app.run(host="0.0.0.0", port=5252, debug=False, ssl_context=(
-    '/home/sapcov/ssl/nginx.crt', '/home/sapcov/ssl/nginx.key'))
+    appConfig['sslPath']['crt'], appConfig['sslPath']['key']))
