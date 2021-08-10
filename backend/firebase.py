@@ -35,19 +35,39 @@ def addCoursesToUser(Courses, avatar, nickname):
         {
             'Courses': CourseToKey,
             'UserInformation': {
-                "avatar": html.escape(avatar),
-                "stdNickName": html.escape(nickname)
+                "avatar": (avatar),
+                "stdNickName": (nickname)
             }
         }, merge=True
     )
-    # add user done 
+    # add user done
 
 
 def getUserInformation(userId):
     school = db.collection("nkust")
     userInfos = school.document(userId).get()
     user = userInfos.to_dict()
-    if 'UserInformation':
+    courses = user['Courses']
+    courses.update({
+        '999-9-PCR99999-00000-01':
+        {
+            'SelectCode': 'Server_Create',
+            'ClassNameAbr': '-𝒫𝓊𝒷𝓁𝒾𝒸 𝒸𝓁𝒶𝓈𝓈 𝓇𝑜𝑜𝓂-',
+            'CourseId': '999-9-PCR99999-00000-01',
+            'CourseName': '共同時間',
+            'CourseGroup': '00',
+            'Credit': 10.0,
+            'Hour': 10.0,
+            'OptionName': '必修',
+            'Annual': '學期',
+            'TeacherName': '𝒩𝑜 𝒯𝑒𝒶𝒸𝒽𝑒𝓇',
+            'CourseTime': '(AL)0-9',
+            'CourseRoom': '𝓘𝓷𝓽𝓮𝓻𝓷𝓮𝓽',
+            'CourseWeekPeriod': []
+        }
+    }
+    )
+    if 'UserInformation' in user:
         return user['UserInformation'], user['Courses']
     else:
         return False
@@ -61,6 +81,15 @@ def postUserMessage(postInformation):
     del postInformation['CourseId']
     history.document().set(
         postInformation
+    )
+
+
+def saveLog(logInfomation):
+    logs = db.collection("nkust").document(
+        "log")
+    history = logs.collection("flaskRequestLog")
+    history.document().set(
+        logInfomation
     )
 
 

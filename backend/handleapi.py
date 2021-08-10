@@ -7,7 +7,7 @@ import hashlib
 import mobileNkust
 import base64
 import re
-from flask import Flask, request, jsonify, abort
+from flask import Flask, request, jsonify, abort, Response
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
@@ -73,7 +73,7 @@ def getcourseinformation():
     print('[USER->]', h)
     if h in temp_:
         return jsonify(temp_[h])
-    #try:
+    # try:
     print('step2')
     cookie = base64.b64decode(cookie).decode('utf8').replace('&', ';')
 
@@ -86,7 +86,7 @@ def getcourseinformation():
     returnData = user.returnclassificationCourses()
     temp_[h] = returnData
     return jsonify(returnData)
-    #except Exception as e:
+    # except Exception as e:
     #    print(e, '請檢查mobile.nkust.edu.tw登入狀態')
     #    return abort(501, '請檢查mobile.nkust.edu.tw登入狀態')
 
@@ -126,6 +126,11 @@ def setthisusertofirebase():
 @app.route("/login", methods=['POST'])
 def login():
     username = request.json.get('username', None)
+    if username == 'guest' or username == 'admin':
+        return jsonify({
+            'status': 0,
+            'msg': f'請勿使用{username}進行登入！'
+        })
     password = request.json.get('password', None)
 
     def webapLogin(username, password):
@@ -156,7 +161,6 @@ def login():
             'status': 0,
             'msg': '帳號密碼錯誤！'
         })
-
     # set user name
     encUsername = base64.b64encode(username.encode("utf-8"))
     m = hashlib.md5()
@@ -170,6 +174,8 @@ def login():
         return jsonify({'status': 0, 'msg': '請先在插件中啟用加入聊天室！'})
     user[0].update({'stdId': h})
     access_token = create_access_token(identity=user[0])
+    # save login log
+
     return jsonify(
         {
             'access_token': access_token,
@@ -190,7 +196,7 @@ def postMessage():
         return jsonify({'status': 0, 'msg': '留言不可為空！'})
     if not CourseId:
         return jsonify({'status': 0, 'msg': '課程編號不可為空！'})
-    userSendMessage = html.escape(userSendMessage)
+    userSendMessage = (userSendMessage)
     message = {
         "CourseId": CourseId,
         "avatar": current_user['avatar'],
@@ -248,5 +254,26 @@ def uploadImage(courseId):
     firebase.postUserMessage(message)
     return jsonify({'status': 1, 'msg': '上傳成功！'})
 
+# after request should save log
 
-app.run(host="0.0.0.0", port=5252, debug=True)
+
+@app.after_request
+def after_request(response):
+    print('[After request]-Log saver-')
+
+    saveLog = {
+        'ip': base64.b64encode(str(request.remote_addr).encode('utf-8')).decode('utf-8'),
+        'method':base64.b64encode(str(request.method).encode('utf-8')).decode('utf-8'),
+        'requestUrl': base64.b64encode(str(request.url).encode('utf-8')).decode('utf-8'),
+        'header': base64.b64encode(str(request.headers).encode('utf-8')).decode('utf-8'),
+        'requestData': base64.b64encode(str(request.data).encode('utf-8')).decode('utf-8'),
+        'responseData': base64.b64encode(str(response.data).encode('utf-8')).decode('utf-8')
+    }
+    filename = secure_filename(str(datetime.now()))
+    open(f'./logs/{filename}.json','w').write(json.dumps(saveLog))
+    response.headers['Log'] = True
+    return response
+
+
+app.run(host="0.0.0.0", port=5252, debug=False, ssl_context=(
+    '/home/sapcov/ssl/nginx.crt', '/home/sapcov/ssl/nginx.key'))
